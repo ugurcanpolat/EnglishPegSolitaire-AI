@@ -6,6 +6,12 @@
 
 #include <iostream>
 
+#include "Board.cpp"
+
 int main(void) {
+    
+    Board test;
+    test.printBoard();
+    
     return 0;
 }
