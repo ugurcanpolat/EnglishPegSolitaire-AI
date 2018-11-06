@@ -15,6 +15,7 @@ int main(void) {
     solitareBoard.printBoard();
     solitareBoard.bfsSolve();
     solitareBoard.dfsSolve();
+    solitareBoard.aStarSolve();
     
     return 0;
 }

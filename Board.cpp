@@ -28,6 +28,7 @@ Board::Board() {
     boardVector = initialBoard;
     lastTurnPegCol = -1;
     lastTurnPegRow = -1;
+    cost = findCost();
 }
 
 Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
@@ -36,6 +37,23 @@ Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
     boardVector = copy;
     this->lastTurnPegRow = lastTurnPegRow;
     this->lastTurnPegCol = lastTurnPegCol;
+    cost = findCost();
+}
+
+int Board::findCost() const {
+    // TODO: Find a good heuristic function
+    return 0;
+}
+
+bool Board::operator<(const Board& comp) const {
+    if (cost < comp.getCost())
+        return true;
+    
+    return false;
+}
+
+int Board::getCost() const {
+    return cost;
 }
 
 void Board::printBoard() const {
@@ -231,4 +249,59 @@ void Board::dfsSolve() const {
     cout << "Number of pegs left: " << v.getNumberOfPegs() << endl;
     cout << "Final board:" << endl;
     v.printBoard();
+}
+
+void Board::aStarSolve() const {
+    int generatedCount = 1;
+    int expandCount = 0;
+    int maxMem = 0;
+    float runtime = 0.0;
+    
+    using namespace chrono;
+    auto aStarStart = high_resolution_clock::now(); // Begin time stamp
+    
+    list<Board> aStarList;
+    aStarList.push_back(*this);
+    
+    Board x, y;
+    vector<Board> possibleMoves;
+    int moveSize;
+    
+    while(!aStarList.empty()) {
+        x = aStarList.front();
+        aStarList.pop_front();
+        
+        possibleMoves = x.getPossibleMoves();
+        
+        if (possibleMoves.empty())
+            break;
+        
+        expandCount++;
+        
+        moveSize = static_cast<int>(possibleMoves.size());
+        
+        for(int i = 0; i < moveSize; i++) {
+            y = possibleMoves[i];
+            aStarList.push_back(y);
+            aStarList.sort();
+            generatedCount++;
+        }
+        
+        if(aStarList.size() > maxMem)
+            maxMem = static_cast<int>(aStarList.size());
+    }
+    
+    auto aStarEnd = high_resolution_clock::now(); // Begin time stamp
+    // Get the elapsed time in unit microseconds
+    runtime = duration_cast<microseconds>(aStarEnd - aStarStart).count();
+    runtime /= 1000;
+    
+    cout << "Algorithm: A*" << endl;
+    cout << "Number of generated nodes: " << generatedCount << endl;
+    cout << "Number of expanded nodes: " << expandCount << endl;
+    cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;
+    cout << "Running time: " << fixed << setprecision(3) << runtime << " milliseconds" << endl;
+    cout << "Number of pegs left: " << y.getNumberOfPegs() << endl;
+    cout << "Final board:" << endl;
+    y.printBoard();
 }

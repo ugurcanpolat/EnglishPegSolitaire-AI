@@ -9,6 +9,7 @@
 
 #include <chrono> // high_resolution_clock
 #include <vector> // vector
+#include <list> // list
 #include <stack> // stack
 #include <queue> // queue
 #include <iomanip> // setprecision, fixed
@@ -19,14 +20,19 @@ class Board {
     vector< vector<Status> > boardVector;
     int lastTurnPegRow;
     int lastTurnPegCol;
+    int cost;
+    int findCost() const;
 public:
     Board();
     Board(const vector< vector<Status> >&, int, int);
+    bool operator<(const Board&) const;
+    int getCost() const;
     void printBoard() const;
     vector<Board> getPossibleMoves() const;
     int getNumberOfPegs() const;
     void bfsSolve() const;
     void dfsSolve() const;
+    void aStarSolve() const;
 };
 
 #endif /* Board_h */
