@@ -53,44 +53,63 @@ void Board::printBoard() const {
     cout << endl;
 }
 
-bool Board::doesValidMoveExist(const vector< vector<Status> >& check) const {
-    int col, endCol;
+vector<Board> Board::getPossibleMoves() const {
+    vector<Board> moves;
+    vector< vector<Status> > move;
     
     for(int row = 0; row < NUM_ROWS; row++) {
-        if (row < FIRST || row > LAST) {
-            col = FIRST;
-            endCol = LAST;
-        } else {
-            col = 0;
-            endCol = NUM_COLS;
+        for(int col = 0; col < NUM_COLS; col++) {
+            if (boardVector[row][col] == PEG) {
+                if (isUpMovePossible(row, col)) {
+                    if (boardVector[row-2][col] == EMPTY &&
+                        boardVector[row-1][col] == PEG) {
+                        move = boardVector;
+                        move[row][col] = EMPTY;
+                        move[row-1][col] = EMPTY;
+                        move[row-2][col] = PEG;
+                        Board possibleMove(move, row-2, col);
+                        moves.push_back(possibleMove);
+                    }
+                }
+                
+                if (isDownMovePossible(row, col)) {
+                    if (boardVector[row+2][col] == EMPTY &&
+                        boardVector[row+1][col] == PEG) {
+                        move = boardVector;
+                        move[row][col] = EMPTY;
+                        move[row+1][col] = EMPTY;
+                        move[row+2][col] = PEG;
+                        Board possibleMove(move, row+2, col);
+                        moves.push_back(possibleMove);
+                    }
+                }
+                
+                if (isLeftMovePossible(row, col)) {
+                    if (boardVector[row][col-2] == EMPTY &&
+                        boardVector[row][col-1] == PEG) {
+                        move = boardVector;
+                        move[row][col] = EMPTY;
+                        move[row][col-1] = EMPTY;
+                        move[row][col-2] = PEG;
+                        Board possibleMove(move, row, col-2);
+                        moves.push_back(possibleMove);
+                    }
+                }
+                
+                if (isRightMovePossible(row, col)) {
+                    if (boardVector[row][col+2] == EMPTY &&
+                        boardVector[row][col+1] == PEG) {
+                        move = boardVector;
+                        move[row][col] = EMPTY;
+                        move[row][col+1] = EMPTY;
+                        move[row][col+2] = PEG;
+                        Board possibleMove(move, row, col+2);
+                        moves.push_back(possibleMove);
+                    }
+                }
+            }
         }
         
-        for(; col < endCol; col++) {
-            if (check[row][col] != PEG)
-                continue;
-            
-            if (isUpMovePossible(row, col)) {
-                if (check[row-2][col] == EMPTY && check[row-1][col] == PEG)
-                    return true;
-            }
-            
-            if (isDownMovePossible(row, col)) {
-                if (check[row+2][col] == EMPTY && check[row+1][col] == PEG)
-                    return true;
-            }
-            
-            if (isLeftMovePossible(row, col)) {
-                if (check[row][col-2] == EMPTY && check[row][col-1] == PEG)
-                    return true;
-                
-            }
-            
-            if (isRightMovePossible(row, col)) {
-                if (check[row][col+2] == EMPTY && check[row][col+1] == PEG)
-                    return true;
-            }
-        }
     }
-    
-    return false;
+    return moves;
 }

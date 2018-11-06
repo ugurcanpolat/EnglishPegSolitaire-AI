@@ -18,11 +18,11 @@ class Board {
     vector< vector<Status> > boardVector;
     int lastTurnPegRow;
     int lastTurnPegCol;
-    bool doesValidMoveExist(const vector< vector<Status> >&) const;
 public:
     Board();
     Board(const vector< vector<Status> >&, int, int);
     void printBoard() const;
+    vector<Board> getPossibleMoves() const;
 };
 
 #endif /* Board_h */
