@@ -64,7 +64,7 @@ void Board::printBoard() const {
             if (row == lastTurnPegRow && col == lastTurnPegCol)
                 cout << "*" << "  ";
             else
-                cout << representativeCharForStatus(boardVector[row][col]) << "  ";
+                cout << representStatusAsChar(boardVector[row][col]) << "  ";
         }
         cout << endl;
     }
@@ -191,7 +191,8 @@ void Board::bfsSolve() const {
     cout << "Number of generated nodes: " << generatedCount << endl;
     cout << "Number of expanded nodes: " << expandCount << endl;
     cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;
-    cout << "Running time: " << fixed << setprecision(3) << runtime << " milliseconds" << endl;
+    cout << "Running time: " << fixed << setprecision(3) << runtime;
+    cout << " milliseconds" << endl;
     cout << "Number of pegs left: " << v.getNumberOfPegs() << endl;
     cout << "Final board:" << endl;
     v.printBoard();
@@ -245,7 +246,8 @@ void Board::dfsSolve() const {
     cout << "Number of generated nodes: " << generatedCount << endl;
     cout << "Number of expanded nodes: " << expandCount << endl;
     cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;
-    cout << "Running time: " << fixed << setprecision(3) << runtime << " milliseconds" << endl;
+    cout << "Running time: " << fixed << setprecision(3) << runtime;
+    cout << " milliseconds" << endl;
     cout << "Number of pegs left: " << v.getNumberOfPegs() << endl;
     cout << "Final board:" << endl;
     v.printBoard();
@@ -300,7 +302,8 @@ void Board::aStarSolve() const {
     cout << "Number of generated nodes: " << generatedCount << endl;
     cout << "Number of expanded nodes: " << expandCount << endl;
     cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;
-    cout << "Running time: " << fixed << setprecision(3) << runtime << " milliseconds" << endl;
+    cout << "Running time: " << fixed << setprecision(3) << runtime;
+    cout << " milliseconds" << endl;
     cout << "Number of pegs left: " << y.getNumberOfPegs() << endl;
     cout << "Final board:" << endl;
     y.printBoard();

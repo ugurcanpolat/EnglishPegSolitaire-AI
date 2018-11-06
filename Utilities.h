@@ -21,7 +21,7 @@ typedef enum Status {
     NOTSPECIFIED = 0, EMPTY, PEG
 } Status;
 
-string representativeCharForStatus(Status status) {
+string representStatusAsChar(Status status) {
     if (status == NOTSPECIFIED)
         return " ";
     else if (status == EMPTY)
