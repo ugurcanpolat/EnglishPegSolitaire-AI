@@ -9,6 +9,7 @@
 
 #include <chrono> // high_resolution_clock
 #include <vector> // vector
+#include <stack> // stack
 #include <queue> // queue
 #include <iomanip> // setprecision, fixed
 
@@ -25,6 +26,7 @@ public:
     vector<Board> getPossibleMoves() const;
     int getNumberOfPegs() const;
     void bfsSolve() const;
+    void dfsSolve() const;
 };
 
 #endif /* Board_h */

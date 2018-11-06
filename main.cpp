@@ -14,6 +14,7 @@ int main(void) {
     cout << "Initial board:" << endl;
     solitareBoard.printBoard();
     solitareBoard.bfsSolve();
+    solitareBoard.dfsSolve();
     
     return 0;
 }

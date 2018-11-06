@@ -178,3 +178,57 @@ void Board::bfsSolve() const {
     cout << "Final board:" << endl;
     v.printBoard();
 }
+
+void Board::dfsSolve() const {
+    int generatedCount = 1;
+    int expandCount = 0;
+    int maxMem = 0;
+    float runtime = 0.0;
+    
+    using namespace chrono;
+    auto dfsStart = high_resolution_clock::now(); // Begin time stamp
+    
+    stack<Board> dfsStack;
+    dfsStack.push(*this);
+
+    Board u, v;
+    vector<Board> possibleMoves;
+    int moveSize;
+    
+    while(!dfsStack.empty()) {
+        Board u = dfsStack.top();
+        dfsStack.pop();
+        
+        possibleMoves = u.getPossibleMoves();
+        
+        if (possibleMoves.empty())
+            break;
+        
+        expandCount++;
+        
+        moveSize = static_cast<int>(possibleMoves.size());
+        
+        for(int i = 0; i < moveSize; i++) {
+            v = possibleMoves[i];
+            dfsStack.push(v);
+            generatedCount++;
+        }
+                
+        if(dfsStack.size() > maxMem)
+            maxMem = static_cast<int>(dfsStack.size());
+    }
+    
+    auto dfsEnd = high_resolution_clock::now(); // Begin time stamp
+    // Get the elapsed time in unit microseconds
+    runtime = duration_cast<microseconds>(dfsEnd - dfsStart).count();
+    runtime /= 1000;
+    
+    cout << "Algorithm: DFS" << endl;
+    cout << "Number of generated nodes: " << generatedCount << endl;
+    cout << "Number of expanded nodes: " << expandCount << endl;
+    cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;
+    cout << "Running time: " << fixed << setprecision(3) << runtime << " milliseconds" << endl;
+    cout << "Number of pegs left: " << v.getNumberOfPegs() << endl;
+    cout << "Final board:" << endl;
+    v.printBoard();
+}
