@@ -12,6 +12,7 @@ Board::Board() {
     vector<Status> emptyRow(NUM_COLS, PEG);
     vector< vector<Status> > initialBoard(NUM_ROWS, emptyRow);
     
+    // Create initial board
     for(int row = 0; row < FIRST; row ++) {
         for(int col = 0; col < FIRST; col++) {
             initialBoard[row][col] = NOTSPECIFIED;
@@ -23,21 +24,22 @@ Board::Board() {
     
     int centerRow = NUM_ROWS / 2;
     int centerCol = NUM_COLS / 2;
+    // Center of board is a hole
     initialBoard[centerRow][centerCol] = EMPTY;
     
     boardVector = initialBoard;
-    lastTurnPegCol = -1;
-    lastTurnPegRow = -1;
-    cost = findCost();
+    lastTurnPegCol = -1; // Default value
+    lastTurnPegRow = -1; // Default value
+    cost = findCost(); // Calculate cost
 }
 
-Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
-      int lastTurnPegCol) {
+Board::Board(const vector< vector<Status> >& copy,
+             int lastTurnPegRow, int lastTurnPegCol) {
     
     boardVector = copy;
     this->lastTurnPegRow = lastTurnPegRow;
     this->lastTurnPegCol = lastTurnPegCol;
-    cost = findCost();
+    cost = findCost(); // Calculate cost
 }
 
 int Board::findCost() const {
@@ -46,6 +48,8 @@ int Board::findCost() const {
 }
 
 bool Board::operator<(const Board& comp) const {
+    // < Operator overloading which compares costs. This will be used
+    // in list.sort() function
     if (cost < comp.getCost())
         return true;
     
@@ -75,9 +79,11 @@ vector<Board> Board::getPossibleMoves() const {
     vector<Board> moves;
     vector< vector<Status> > move;
     
+    // Traverse through whole board
     for(int row = 0; row < NUM_ROWS; row++) {
         for(int col = 0; col < NUM_COLS; col++) {
             if (boardVector[row][col] == PEG) {
+                // If Up move is possible add the move board to vector
                 if (isUpMovePossible(row, col)) {
                     if (boardVector[row-2][col] == EMPTY &&
                         boardVector[row-1][col] == PEG) {
@@ -90,6 +96,7 @@ vector<Board> Board::getPossibleMoves() const {
                     }
                 }
                 
+                // If Down move is possible add the move board to vector
                 if (isDownMovePossible(row, col)) {
                     if (boardVector[row+2][col] == EMPTY &&
                         boardVector[row+1][col] == PEG) {
@@ -102,6 +109,7 @@ vector<Board> Board::getPossibleMoves() const {
                     }
                 }
                 
+                // If Left move is possible add the move board to vector
                 if (isLeftMovePossible(row, col)) {
                     if (boardVector[row][col-2] == EMPTY &&
                         boardVector[row][col-1] == PEG) {
@@ -114,6 +122,7 @@ vector<Board> Board::getPossibleMoves() const {
                     }
                 }
                 
+                // If Right move is possible add the move board to vector
                 if (isRightMovePossible(row, col)) {
                     if (boardVector[row][col+2] == EMPTY &&
                         boardVector[row][col+1] == PEG) {
@@ -133,6 +142,7 @@ vector<Board> Board::getPossibleMoves() const {
 }
 
 int Board::getNumberOfPegs() const {
+    // Returns number of pegs on the board
     int numberOfPegs = 0;
     for(int row = 0; row < NUM_ROWS; row++) {
         for(int col = 0; col < NUM_COLS; col++) {
@@ -144,6 +154,8 @@ int Board::getNumberOfPegs() const {
 }
 
 void Board::bfsSolve() const {
+    // BFS function is implemented according to my implementation from
+    // homework of Analysis of Algorithms II class.
     int generatedCount = 1;
     int expandCount = 0;
     int maxMem = 0;
@@ -199,6 +211,8 @@ void Board::bfsSolve() const {
 }
 
 void Board::dfsSolve() const {
+    // BFS function is implemented according to my implementation from
+    // homework of Analysis of Algorithms II class.
     int generatedCount = 1;
     int expandCount = 0;
     int maxMem = 0;

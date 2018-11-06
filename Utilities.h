@@ -31,6 +31,7 @@ string representStatusAsChar(Status status) {
 }
 
 bool isUpMovePossible(int row, int col) {
+    // Check if Up move is possible for given row-column
     if (row < FIRST)
         return false;
     else if (row >= FIRST && row <= LAST) {
@@ -45,14 +46,17 @@ bool isUpMovePossible(int row, int col) {
 }
 
 bool isDownMovePossible(int row, int col) {
+    // Use rotation rules since board is symmetric
     return isUpMovePossible(NUM_ROWS-row-1, col);
 }
 
 bool isLeftMovePossible(int row, int col) {
+    // Use rotation rules since board is symmetric
     return isUpMovePossible(col, NUM_COLS-row-1);
 }
 
 bool isRightMovePossible(int row, int col) {
+    // Use rotation rules since board is symmetric
     return isUpMovePossible(NUM_ROWS-col-1, row);
 }
 
