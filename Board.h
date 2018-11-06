@@ -7,7 +7,10 @@
 #ifndef Board_h
 #define Board_h
 
-#include <vector>
+#include <chrono> // high_resolution_clock
+#include <vector> // vector
+#include <queue> // queue
+#include <iomanip> // setprecision, fixed
 
 #include "Utilities.h"
 
@@ -18,6 +21,7 @@ class Board {
     bool doesValidMoveExist(const vector< vector<Status> >&) const;
 public:
     Board();
+    Board(const vector< vector<Status> >&, int, int);
     void printBoard() const;
 };
 

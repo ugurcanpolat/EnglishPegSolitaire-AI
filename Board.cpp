@@ -30,6 +30,14 @@ Board::Board() {
     lastTurnPegRow = -1;
 }
 
+Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
+      int lastTurnPegCol) {
+    
+    boardVector = copy;
+    this->lastTurnPegRow = lastTurnPegRow;
+    this->lastTurnPegCol = lastTurnPegCol;
+}
+
 void Board::printBoard() const {
     for(int row = 0; row < NUM_ROWS; row++) {
         for(int col = 0; col < NUM_COLS; col++) {
