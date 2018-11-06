@@ -9,9 +9,11 @@
 #include "Board.cpp"
 
 int main(void) {
+    Board solitareBoard;
     
-    Board test;
-    test.printBoard();
+    cout << "Initial board:" << endl;
+    solitareBoard.printBoard();
+    solitareBoard.bfsSolve();
     
     return 0;
 }

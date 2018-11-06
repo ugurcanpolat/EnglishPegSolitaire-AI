@@ -124,3 +124,57 @@ int Board::getNumberOfPegs() const {
     }
     return numberOfPegs;
 }
+
+void Board::bfsSolve() const {
+    int generatedCount = 1;
+    int expandCount = 0;
+    int maxMem = 0;
+    float runtime = 0.0;
+    
+    using namespace chrono;
+    auto bfsStart = high_resolution_clock::now(); // Begin time stamp
+    
+    queue<Board> bfsQueue;
+    bfsQueue.push(*this);
+    
+    Board v, w;
+    vector<Board> possibleMoves;
+    int moveSize;
+    
+    while(!bfsQueue.empty()) {
+        v = bfsQueue.front();
+        bfsQueue.pop();
+        
+        possibleMoves = v.getPossibleMoves();
+        
+        if (possibleMoves.empty())
+            break;
+        
+        expandCount++;
+        
+        moveSize = static_cast<int>(possibleMoves.size());
+        
+        for(int i = 0; i < moveSize; i++) {
+            w = possibleMoves[i];
+            bfsQueue.push(w); // Add to the stack
+            generatedCount++;
+        }
+        
+        if(bfsQueue.size() > maxMem)
+            maxMem = static_cast<int>(bfsQueue.size());
+    }
+    
+    auto bfsEnd = high_resolution_clock::now(); // End time stamp
+    // Get the elapsed time in unit microseconds
+    runtime = duration_cast<microseconds>(bfsEnd - bfsStart).count();
+    runtime /= 1000;
+    
+    cout << "Algorithm: BFS" << endl;
+    cout << "Number of generated nodes: " << generatedCount << endl;
+    cout << "Number of expanded nodes: " << expandCount << endl;
+    cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;
+    cout << "Running time: " << fixed << setprecision(3) << runtime << " milliseconds" << endl;
+    cout << "Number of pegs left: " << v.getNumberOfPegs() << endl;
+    cout << "Final board:" << endl;
+    v.printBoard();
+}

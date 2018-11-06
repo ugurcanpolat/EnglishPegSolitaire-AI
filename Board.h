@@ -24,6 +24,7 @@ public:
     void printBoard() const;
     vector<Board> getPossibleMoves() const;
     int getNumberOfPegs() const;
+    void bfsSolve() const;
 };
 
 #endif /* Board_h */
