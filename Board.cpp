@@ -39,7 +39,9 @@ Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
 }
 
 void Board::printBoard() const {
+    cout << endl;
     for(int row = 0; row < NUM_ROWS; row++) {
+        cout << "  ";
         for(int col = 0; col < NUM_COLS; col++) {
             if (row == lastTurnPegRow && col == lastTurnPegCol)
                 cout << "*" << "  ";
@@ -48,6 +50,7 @@ void Board::printBoard() const {
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 bool Board::doesValidMoveExist(const vector< vector<Status> >& check) const {
