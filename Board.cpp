@@ -33,18 +33,18 @@ Board::Board() {
     cost = findCost(); // Calculate cost
 }
 
-Board::Board(const vector< vector<Status> >& copy,
-             int lastTurnPegRow, int lastTurnPegCol) {
+Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
+             int lastTurnPegCol, int previousCost) {
     
     boardVector = copy;
     this->lastTurnPegRow = lastTurnPegRow;
     this->lastTurnPegCol = lastTurnPegCol;
-    cost = findCost(); // Calculate cost
+    cost = previousCost + findCost(); // Calculate cost
 }
 
 int Board::findCost() const {
     // TODO: Find a good heuristic function
-    return 0;
+    return 1;
 }
 
 bool Board::operator<(const Board& comp) const {
@@ -91,7 +91,7 @@ vector<Board> Board::getPossibleMoves() const {
                         move[row][col] = EMPTY;
                         move[row-1][col] = EMPTY;
                         move[row-2][col] = PEG;
-                        Board possibleMove(move, row-2, col);
+                        Board possibleMove(move, row-2, col, cost);
                         moves.push_back(possibleMove);
                     }
                 }
@@ -104,7 +104,7 @@ vector<Board> Board::getPossibleMoves() const {
                         move[row][col] = EMPTY;
                         move[row+1][col] = EMPTY;
                         move[row+2][col] = PEG;
-                        Board possibleMove(move, row+2, col);
+                        Board possibleMove(move, row+2, col, cost);
                         moves.push_back(possibleMove);
                     }
                 }
@@ -117,7 +117,7 @@ vector<Board> Board::getPossibleMoves() const {
                         move[row][col] = EMPTY;
                         move[row][col-1] = EMPTY;
                         move[row][col-2] = PEG;
-                        Board possibleMove(move, row, col-2);
+                        Board possibleMove(move, row, col-2, cost);
                         moves.push_back(possibleMove);
                     }
                 }
@@ -130,7 +130,7 @@ vector<Board> Board::getPossibleMoves() const {
                         move[row][col] = EMPTY;
                         move[row][col+1] = EMPTY;
                         move[row][col+2] = PEG;
-                        Board possibleMove(move, row, col+2);
+                        Board possibleMove(move, row, col+2, cost);
                         moves.push_back(possibleMove);
                     }
                 }

@@ -24,7 +24,7 @@ class Board {
     int findCost() const;
 public:
     Board();
-    Board(const vector< vector<Status> >&, int, int);
+    Board(const vector< vector<Status> >&, int, int, int);
     bool operator<(const Board&) const;
     int getCost() const;
     void printBoard() const;
