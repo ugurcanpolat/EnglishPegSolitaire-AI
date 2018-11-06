@@ -214,7 +214,7 @@ void Board::dfsSolve() const {
     int moveSize;
     
     while(!dfsStack.empty()) {
-        Board u = dfsStack.top();
+        u = dfsStack.top();
         dfsStack.pop();
         
         possibleMoves = u.getPossibleMoves();
