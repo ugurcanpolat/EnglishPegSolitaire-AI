@@ -23,6 +23,7 @@ public:
     Board(const vector< vector<Status> >&, int, int);
     void printBoard() const;
     vector<Board> getPossibleMoves() const;
+    int getNumberOfPegs() const;
 };
 
 #endif /* Board_h */

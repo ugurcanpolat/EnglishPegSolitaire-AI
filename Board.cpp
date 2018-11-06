@@ -113,3 +113,14 @@ vector<Board> Board::getPossibleMoves() const {
     }
     return moves;
 }
+
+int Board::getNumberOfPegs() const {
+    int numberOfPegs = 0;
+    for(int row = 0; row < NUM_ROWS; row++) {
+        for(int col = 0; col < NUM_COLS; col++) {
+            if (boardVector[row][col] == PEG)
+                numberOfPegs++;
+        }
+    }
+    return numberOfPegs;
+}
