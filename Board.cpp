@@ -39,12 +39,38 @@ Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
     boardVector = copy;
     this->lastTurnPegRow = lastTurnPegRow;
     this->lastTurnPegCol = lastTurnPegCol;
-    cost = previousCost + findCost(); // Calculate cost
+    cost = findCost(); // Calculate cost
 }
 
 int Board::findCost() const {
-    // TODO: Find a good heuristic function
-    return 1;
+    int cost = 0;
+    
+    for (int row = 0; row < NUM_ROWS; row++) {
+        for (int col = 0; col < NUM_COLS; col++) {
+            if (boardVector[row][col] == PEG) {
+                if ((row == (CENTER-1) || row == (CENTER+1)) &&
+                    (col == (CENTER-1) || col == (CENTER+1))) {
+                    cost += 2;
+                } else if ((row == (CENTER-1) || row == (CENTER+1)) &&
+                           col == CENTER) {
+                    continue;
+                } else if (row == CENTER &&
+                          (col == (CENTER-1) || col == (CENTER+1))) {
+                    continue;
+                } else if ((row == 0 || row == NUM_ROWS-1) &&
+                           (col == FIRST || col == LAST)) {
+                    cost += 4;
+                } else if ((row == FIRST || row == LAST) &&
+                           (col == 0 || col == NUM_COLS-1)) {
+                    cost += 4;
+                } else {
+                    cost += 1;
+                }
+            }
+        }
+    }
+
+    return cost + getNumberOfPegs() * 2;
 }
 
 bool Board::operator<(const Board& comp) const {
@@ -299,9 +325,10 @@ void Board::aStarSolve() const {
         for(int i = 0; i < moveSize; i++) {
             y = possibleMoves[i];
             aStarList.push_back(y);
-            aStarList.sort();
             generatedCount++;
         }
+        
+        aStarList.sort();
         
         if(aStarList.size() > maxMem)
             maxMem = static_cast<int>(aStarList.size());

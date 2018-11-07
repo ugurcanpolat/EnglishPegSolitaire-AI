@@ -10,8 +10,9 @@
 #define NUM_ROWS 7
 #define NUM_COLS 7
 
-#define FIRST 2
-#define LAST  4
+#define FIRST  2
+#define LAST   4
+#define CENTER 3
 
 #include <string>
 
