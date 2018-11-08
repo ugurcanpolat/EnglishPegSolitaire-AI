@@ -30,7 +30,7 @@ Board::Board() {
     boardVector = initialBoard;
     lastTurnPegCol = -1; // Default value
     lastTurnPegRow = -1; // Default value
-    cost = findCost(); // Calculate cost
+    cost = 0; // Default value
 }
 
 Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
@@ -39,38 +39,78 @@ Board::Board(const vector< vector<Status> >& copy, int lastTurnPegRow,
     boardVector = copy;
     this->lastTurnPegRow = lastTurnPegRow;
     this->lastTurnPegCol = lastTurnPegCol;
-    cost = findCost(); // Calculate cost
+    cost = previousCost; // Default value
 }
 
-int Board::findCost() const {
-    int cost = 0;
+void Board::findCost(Heuristic heuristicType) {
+    if (heuristicType == VALID_MOVES)
+        cost += heuristicValidMoves();
+    else
+        cost += heuristicMovablePegs();
+}
+
+int Board::heuristicValidMoves() const {
+    vector<Board> possibleMoves = getPossibleMoves();
+    int moveSize = static_cast<int>(possibleMoves.size());
     
-    for (int row = 0; row < NUM_ROWS; row++) {
-        for (int col = 0; col < NUM_COLS; col++) {
+    if (moveSize == 0)
+        return -1;
+    
+    return moveSize;
+}
+
+int Board::heuristicMovablePegs() const {
+    int numberOfMovablePegs = getNumberOfMovablePegs();
+    
+    if (numberOfMovablePegs == 0)
+        return -1;
+    
+    return numberOfMovablePegs;
+}
+
+int Board::getNumberOfMovablePegs() const {
+    int numberOfMovablePegs = 0;
+    
+    // Traverse through whole board
+    for(int row = 0; row < NUM_ROWS; row++) {
+        for(int col = 0; col < NUM_COLS; col++) {
             if (boardVector[row][col] == PEG) {
-                if ((row == (CENTER-1) || row == (CENTER+1)) &&
-                    (col == (CENTER-1) || col == (CENTER+1))) {
-                    cost += 2;
-                } else if ((row == (CENTER-1) || row == (CENTER+1)) &&
-                           col == CENTER) {
-                    continue;
-                } else if (row == CENTER &&
-                          (col == (CENTER-1) || col == (CENTER+1))) {
-                    continue;
-                } else if ((row == 0 || row == NUM_ROWS-1) &&
-                           (col == FIRST || col == LAST)) {
-                    cost += 4;
-                } else if ((row == FIRST || row == LAST) &&
-                           (col == 0 || col == NUM_COLS-1)) {
-                    cost += 4;
-                } else {
-                    cost += 1;
+                // If Up move is possible
+                if (isUpMovePossible(row, col)) {
+                    if (boardVector[row-2][col] == EMPTY &&
+                        boardVector[row-1][col] == PEG) {
+                        numberOfMovablePegs++;
+                    }
+                }
+                
+                // If Down move is possible
+                else if (isDownMovePossible(row, col)) {
+                    if (boardVector[row+2][col] == EMPTY &&
+                        boardVector[row+1][col] == PEG) {
+                        numberOfMovablePegs++;
+                    }
+                }
+                
+                // If Left move is possible
+                else if (isLeftMovePossible(row, col)) {
+                    if (boardVector[row][col-2] == EMPTY &&
+                        boardVector[row][col-1] == PEG) {
+                        numberOfMovablePegs++;
+                    }
+                }
+                
+                // If Right move is possible
+                else if (isRightMovePossible(row, col)) {
+                    if (boardVector[row][col+2] == EMPTY &&
+                        boardVector[row][col+1] == PEG) {
+                        numberOfMovablePegs++;
+                    }
                 }
             }
         }
     }
-
-    return cost + getNumberOfPegs() * 2;
+    
+    return numberOfMovablePegs;
 }
 
 bool Board::operator<(const Board& comp) const {
@@ -100,6 +140,8 @@ void Board::printBoard() const {
     }
     cout << endl;
 }
+
+
 
 vector<Board> Board::getPossibleMoves() const {
     vector<Board> moves;
@@ -293,7 +335,7 @@ void Board::dfsSolve() const {
     v.printBoard();
 }
 
-void Board::aStarSolve() const {
+void Board::aStarSolve(Heuristic heuristicType) const {
     int generatedCount = 1;
     int expandCount = 0;
     int maxMem = 0;
@@ -324,6 +366,7 @@ void Board::aStarSolve() const {
         
         for(int i = 0; i < moveSize; i++) {
             y = possibleMoves[i];
+            y.findCost(heuristicType);
             aStarList.push_back(y);
             generatedCount++;
         }
@@ -339,7 +382,11 @@ void Board::aStarSolve() const {
     runtime = duration_cast<microseconds>(aStarEnd - aStarStart).count();
     runtime /= 1000;
     
-    cout << "Algorithm: A*" << endl;
+    if (heuristicType == VALID_MOVES)
+        cout << "Algorithm: A* (Number of valid moves as heuristic)" << endl;
+    else
+        cout << "Algorithm: A* (Number of movable pegs as heuristic)" << endl;
+    
     cout << "Number of generated nodes: " << generatedCount << endl;
     cout << "Number of expanded nodes: " << expandCount << endl;
     cout << "Maximum number of nodes kept in the memory: " << maxMem << endl;

@@ -21,7 +21,10 @@ class Board {
     int lastTurnPegRow;
     int lastTurnPegCol;
     int cost;
-    int findCost() const;
+    void findCost(Heuristic);
+    int getNumberOfMovablePegs() const;
+    int heuristicValidMoves() const;
+    int heuristicMovablePegs() const;
 public:
     Board();
     Board(const vector< vector<Status> >&, int, int, int);
@@ -32,7 +35,7 @@ public:
     int getNumberOfPegs() const;
     void bfsSolve() const;
     void dfsSolve() const;
-    void aStarSolve() const;
+    void aStarSolve(Heuristic) const;
 };
 
 #endif /* Board_h */

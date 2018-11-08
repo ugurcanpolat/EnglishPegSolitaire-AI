@@ -22,6 +22,10 @@ typedef enum Status {
     NOTSPECIFIED = 0, EMPTY, PEG
 } Status;
 
+typedef enum Heuristic {
+    VALID_MOVES = 0, MOVABLE_PEGS
+} Heuristic;
+
 string representStatusAsChar(Status status) {
     if (status == NOTSPECIFIED)
         return " ";

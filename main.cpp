@@ -15,7 +15,8 @@ int main(void) {
     solitareBoard.printBoard();
     solitareBoard.bfsSolve();
     solitareBoard.dfsSolve();
-    solitareBoard.aStarSolve();
+    solitareBoard.aStarSolve(VALID_MOVES);
+    solitareBoard.aStarSolve(MOVABLE_PEGS);
     
     return 0;
 }
