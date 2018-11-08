@@ -332,7 +332,7 @@ void Board::dfsSolve() const {
     cout << " milliseconds" << endl;
     cout << "Number of pegs left: " << v.getNumberOfPegs() << endl;
     cout << "Final board:" << endl;
-    v.printBoard();
+    u.printBoard();
 }
 
 void Board::aStarSolve(Heuristic heuristicType) const {
@@ -394,5 +394,5 @@ void Board::aStarSolve(Heuristic heuristicType) const {
     cout << " milliseconds" << endl;
     cout << "Number of pegs left: " << y.getNumberOfPegs() << endl;
     cout << "Final board:" << endl;
-    y.printBoard();
+    x.printBoard();
 }
